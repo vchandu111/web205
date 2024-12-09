@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+    <link rel="stylesheet" href="./prods.css" />
+  </head>
+  <body>
+    <div id="search-container">
+      <input type="text" id="searchBar" placeholder="Search for products..." />
+      <select id="sortBar">
+        <option value="">Sort by price</option>
+        <option value="lth">Price: Low to High</option>
+        <option value="htl">Price: High to Low</option>
+      </select>
+    </div>
+    <div id="product-container"></div>
+  </body>
+</html>
+
+<script>
+  // initialise products array
+  let productsArr = [];
+  let filteredProds = [];
+  // Fetch the products from the API
+  (async function fetchProducts() {
+    let resp = await fetch(`https://fakestoreapi.com/products`);
+    let data = await resp.json();
+
+    displayProducts(data);
+    productsArr = [...data];
+    filteredProds = [...data];
+  })();
+
+  //   Display products
+  function displayProducts(arr) {
+    const productContainer = document.getElementById("product-container");
+    productContainer.innerHTML = ``;
+    arr.forEach((product) => {
+      productContainer.innerHTML += `
+                        <div>
+                                <img src="${product.image}" alt="${
+        product.title
+      }" />
+                                <h3>${product.title}</h3>
+                                <p>${product.description.slice(0, 100)}...</p>
+                                <p>₹${product.price}</p>
+                                <p>Rating: ${product.rating.rate} (${
+        product.rating.count
+      } reviews)</p>
+                                <div>
+                                        <button>Add to Cart</button>
+                                        <button>Buy Now</button>
+                                        </div>
+                                </div>
+                `;
+    });
+  }
+
+  //   get input value on change
+  let searchItem = document.getElementById("searchBar");
+  searchItem.addEventListener("input", filterProducts);
+  // Filter the products wrt search value & sort if required
+  function filterProducts() {
+    let searchTerm = searchItem.value.toLowerCase();
+    console.log(searchTerm);
+    //     console.log(productsArr);
+
+    const filteredProducts = productsArr.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm)
+    );
+    console.log(filteredProducts);
+    displayProducts(filteredProducts);
+    filteredProds = [...filteredProducts];
+  }
+
+  // get sorting value from select tag
+  let sortOrder = document.getElementById("sortBar");
+  sortOrder.addEventListener("change", sortFilteredProds);
+
+  // Sort filteredProducts
+  function sortFilteredProds() {
+    if (sortOrder.value === "lth")
+      filteredProds.sort((a, b) => a.price - b.price);
+    else filteredProds.sort((a, b) => b.price - a.price);
+
+    displayProducts(filteredProds);
+  }
+</script>

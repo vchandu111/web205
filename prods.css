@@ -1,0 +1,49 @@
+#search-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+}
+
+#product-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+        gap:1rem;
+        padding:1rem;
+        max-width:1200px;
+        margin:auto;
+
+}
+
+#product-container>div {
+        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        border-radius: 2rem;
+        padding:1rem;
+}
+#product-container>div:hover {
+       background-color: thistle;
+       color:white;
+}
+
+img {
+        max-width: 100%;
+        height:24rem;
+        margin:auto;
+        display:block;
+}
+
+h3 {
+        color:navy;
+}
+
+button {
+        background-color:crimson;
+        color:white;
+        border:none;
+        padding:0.5rem 1rem;
+        border-radius:1rem;
+}
+
+button:hover {
+        background-color: purple;
+        cursor: pointer;
+}
